@@ -9,11 +9,8 @@ import domain.Tweet;
 import domain.User;
 import java.util.List;
 import javax.ejb.Stateful;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,9 +21,10 @@ import service.KwetterService;
  * @author RY Jin
  */
 @Path("/kwetter")
-//@Stateful
+@Stateful
 public class KwetterAppService {
-    KwetterService kwetter = new KwetterService();
+    @Inject
+    KwetterService kwetter;
     
     @GET
     @Path("/users")
@@ -35,11 +33,23 @@ public class KwetterAppService {
         return kwetter.getAllUsers();
     }
     
+    
+    
+
+    
+    
     @GET
     @Path("/users/{name}")
     @Produces("application/xml,application/json")
     public User userById(@PathParam("name") String name){
         return kwetter.findUserByName(name);
+    }
+
+    @GET
+    @Path("/users/{name}/tweets")
+    @Produces("application/xml,application/json")
+    public List<Tweet> getTweets2(@PathParam("name") String name){
+        return kwetter.getTweetsFromUser(name);
     }
     
     @GET

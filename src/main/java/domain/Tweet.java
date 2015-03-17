@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,8 +11,8 @@ public class Tweet {
     private String tweet;
     private Date postDate;
     private String postedFrom;
-    private List tags;
-    private List mentions;
+    private List<String> tags = new ArrayList();
+    private List<String> mentions = new ArrayList();
 
     public Tweet() {
     }
@@ -67,7 +68,7 @@ public class Tweet {
     }
     
     public List getMentions(){
-        return this.tags;
+        return this.mentions;
     }
     
     public void setMentions(List mentions){

@@ -1,0 +1,9 @@
+kwetter\rest\KwetterAppService.class
+dao\DataStorageBean.class
+kwetter\rest\ApplicationConfig.class
+dao\UserDAO.class
+domain\Tweet.class
+domain\User.class
+kwetter\rest\RestResponseFilter.class
+service\KwetterService.class
+dao\UserDAOCollectionImpl.class
