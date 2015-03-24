@@ -1,6 +1,7 @@
 package domain;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -11,6 +12,7 @@ public class Tweet {
     private String tweet;
     private Date postDate;
     private String postedFrom;
+    private String ownerName;
     private List<String> tags = new ArrayList();
     private List<String> mentions = new ArrayList();
 
@@ -20,19 +22,14 @@ public class Tweet {
     public Tweet(String tweet) {
         this.tweet = tweet;
     }
-
-    public Tweet(String tweet, Date datum, String vanaf) {
-        this.tweet = tweet;
-        this.postDate = datum;
-        this.postedFrom = vanaf;
-    }
     
-    public Tweet(String tweet, Date datum, String vanaf, List tags, List mentions) {
+    public Tweet(String tweet, Date date, String from, String owner, List tags, List mentions) {
         this.tweet = tweet;
-        this.postDate = datum;
-        this.postedFrom = vanaf;
+        this.postDate = date;
+        this.postedFrom = from;
+        this.ownerName = owner;
         this.tags = tags;
-        this.mentions = mentions;
+        this.mentions = mentions;    
     }
 
     public String getTweet() {
@@ -43,20 +40,42 @@ public class Tweet {
         this.tweet = tweet;
     }
 
-    public Date getDatum() {
-        return postDate;
+    public Date getDate(){
+        return this.postDate;
+    }
+    
+    public String getStringDate() {
+        Date date = this.postDate;
+        int dd = date.getDate();
+        int mm = date.getMonth()+1;
+        int yyyy = date.getYear();
+        int HH = date.getHours();
+        int MM = date.getMinutes();
+
+        if(dd<10) {dd='0'+dd;} 
+        if(mm<10) {mm='0'+mm;} 
+        String convertedDate = ""+mm+'/'+dd+'/'+yyyy+' '+HH+':'+MM;
+        return convertedDate;
     }
 
-    public void setDatum(Date datum) {
+    public void setDate(Date datum) {
         this.postDate = datum;
     }
 
-    public String getVanaf() {
+    public String getPostedFrom() {
         return postedFrom;
     }
 
-    public void setVanaf(String vanaf) {
-        this.postedFrom = vanaf;
+    public void setPostedFrom(String from) {
+        this.postedFrom = from;
+    }
+    
+    public String getOwner() {
+        return ownerName;
+    }
+
+    public void setOwner(String owner) {
+        this.ownerName = owner;
     }
     
     public List getTags(){

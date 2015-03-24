@@ -12,8 +12,10 @@ public class User  {
     private String name;
     private String web;
     private String bio;
+    private String avatar;
 
     private Collection<User> following = new ArrayList();
+    private Collection<User> followers = new ArrayList();
     private Collection<Tweet> tweets = new ArrayList();
 
     public User() {
@@ -27,6 +29,13 @@ public class User  {
         this.name = naam;
         this.web = web;
         this.bio = bio;
+    }
+    
+    public User(String naam, String web, String bio, String avatar){
+        this.name = naam;
+        this.web = web;
+        this.bio = bio;
+        this.avatar = avatar;
     }
 
     public String getBio() {
@@ -52,6 +61,14 @@ public class User  {
     public void setWeb(String web) {
         this.web = web;
     }
+    
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public Collection<User> getFollowing() {
         return Collections.unmodifiableCollection(following);
@@ -59,6 +76,14 @@ public class User  {
 
     public void setFollowing(Collection<User> following) {
         this.following = following;
+    }
+    
+    public Collection<User> getFollower() {
+        return Collections.unmodifiableCollection(followers);
+    }
+
+    public void setFollower(Collection<User> followers) {
+        this.followers = followers;
     }
 
     public Collection<Tweet> getTweets() {
@@ -68,14 +93,13 @@ public class User  {
     public void setTweets(Collection<Tweet> tweets) {
         this.tweets = tweets;
     }
-
-
+    
     public Boolean addFollowing(User following){
         return this.following.add(following);
     }
 
-  
     public Boolean addTweet(Tweet tweet){
+        tweet.setOwner(this.getName());
         return this.tweets.add(tweet);
     }
 

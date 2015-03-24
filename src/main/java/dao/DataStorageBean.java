@@ -13,9 +13,9 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import domain.Tweet;
 import domain.User;
+import jdk.nashorn.internal.runtime.regexp.RegExp;
 
 @Singleton
-//@ConcurrencyManagement(BEAN) // @ConcurrencyManagement(BEAN) are responsible for their own thread-safety
 @Startup // causes the bean to be instantiated by the container when the application starts.
 public class DataStorageBean {
        
@@ -23,44 +23,44 @@ public class DataStorageBean {
           
     @PostConstruct
     private void initUsers() {
-        User u1 = new User("Hans", "http", "geboren 1");
-        User u2 = new User("Frank", "httpF", "geboren 2");
-        User u3 = new User("Tom", "httpT", "geboren 3");
-        User u4 = new User("Sjaak", "httpS", "geboren 4");
+        User u1 = new User("Hans", "http", "geboren 1", "assets/img/avatar_01.jpg");
+        User u2 = new User("Frank", "httpF", "geboren 2", "assets/img/avatar_02.jpg");
+        User u3 = new User("Tom", "httpT", "geboren 3", "assets/img/avatar_03.jpg");
+        User u4 = new User("Sjaak", "httpS", "geboren 4", "assets/img/avatar_01.jpg");
         u1.addFollowing(u2);
         u1.addFollowing(u3);
         u1.addFollowing(u4);
 
-        Tweet t1 = new Tweet("Hallo", new Date(), "PC");
-        Tweet t2 = new Tweet("Hallo again", new Date(), "PC");
-        Tweet t3 = new Tweet("Hallo where are you", new Date(), "PC");
-        
         List tags = new ArrayList();
         List mentions = new ArrayList();
-        tags.add("tag1");tags.add("tag2");
-        mentions.add("mention1");mentions.add("mention2");
-        t1.setTags(tags);
-        t1.setMentions(mentions);
+        List mentions2 = new ArrayList();
+        tags.add("Hello");tags.add("World");
+        mentions.add("Frank");mentions.add("Tom");
+        mentions2.add("Hans");mentions2.add("Tom");
+        
+        Tweet t1 = new Tweet("Hallo", new Date(), "PC", "Hans", tags, mentions);
+        Tweet t2 = new Tweet("Hallo again", new Date(), "PC", "Hans", tags, mentions);
+        Tweet t3 = new Tweet("Hallo where are you", new Date(), "PC", "Hans", tags, mentions);
+        Tweet t4 = new Tweet("Currently at the Rex", new Date(), "PC", "Frank", tags, mentions2);
+        Tweet t5 = new Tweet("Im at the pathé watching a movie", new Date(), "PC", "Frank", tags, mentions2);
         
         u1.addTweet(t1);
         u1.addTweet(t2);
         u1.addTweet(t3);
+        u2.addTweet(t4);
+        u2.addTweet(t5);
 
-        this.create(u1);
-        this.create(u2);
-        this.create(u3);
-        this.create(u4);
+        this.createUser(u1);
+        this.createUser(u2);
+        this.createUser(u3);
+        this.createUser(u4);
     }  
-//     
-//    public DataStorageBean(){
-//        initUsers();
-//    }
       
     public int count() {
         return users.size();
     }
 
-    public void create(User user) {
+    public void createUser(User user) {
         users.add(user);
     }
     
@@ -72,13 +72,13 @@ public class DataStorageBean {
         return new ArrayList(users);
     }
 
-    public void remove(User user) {
+    public void removeUser(User user) {
         users.remove(user);
     }
 
     public User findById(Long id) {
         throw new UnsupportedOperationException("Not supported yet.");
-        //welke ID? 
+        //welke ID? lel.
     }
     
     public User findByName(String name){
@@ -91,8 +91,8 @@ public class DataStorageBean {
         return found;
     }
     
+    //returns all tweets, TODO: only get tweets from user, and tweets with user mentioned?
     public List<Tweet> getAllTweets() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         List<Tweet> found = new ArrayList();
         for (User u : users){
             if(u.getTweets().size()>0){
@@ -102,10 +102,96 @@ public class DataStorageBean {
         return found;
     }
     
-    public List<Tweet> getTweetsFromUserWithName(String name) {
+    public List<Tweet> getTweetsFromUser(String name) {
         User foundUser = findByName(name);
         List<Tweet> foundTweets = new ArrayList();
         foundTweets.addAll(foundUser.getTweets());
         return foundTweets;
+    }
+    
+    public boolean addTweetToUser(String tweet, String owner){
+        boolean succes = false;
+        User u = findByName(owner);
+        if(u instanceof User){
+            Tweet t = createTweet(tweet, owner);
+            u.addTweet(t);
+            succes = true;
+        }
+        return succes;
+    }
+    
+    private Tweet createTweet(String tweet, String owner){
+        String tweetContent = tweet;
+        
+        List<String> tags = new ArrayList();
+        List<String> mentions = new ArrayList();
+        
+        String[] tagslistarr = tweetContent.split(" ");
+        System.out.println(tagslistarr.length);
+        System.out.println(tagslistarr);
+        for (String t : tagslistarr) {
+            System.out.println(t);
+        }
+//        for (String tagslistarr1 : tagslistarr) {
+//            if (tagslistarr1.indexOf("#") == 0) {
+//                String pattern = tagslistarr1;
+//                String re = new RegExp(pattern, "g");
+//                tweetContent = tweetContent.replace(re, "");
+//                tags.add(tagslistarr1);
+//            }
+//            if (tagslistarr1.indexOf("@") == 0) {
+//                String pattern = tagslistarr1;
+//                String re = new RegExp(pattern, "g");
+//                tweetContent = tweetContent.replace(re, "");
+//                mentions.add(tagslistarr1);  
+//            }
+//        } 
+        Tweet t = new Tweet(tweet, new Date(), "unknown", owner, tags, mentions);
+        return t;
+
+                //(old)JavaScript code:
+        //for (int i = 0; i < tagslistarr.length; i++) {
+        //    if(tagslistarr[i].indexOf("#") === 0){
+        //      String pattern = tagslistarr[i],
+        //      re = new RegExp(pattern, "g");
+        //      tweetContent = tweetContent.replace(re, "");
+        //
+        //      tags.push(tagslistarr[i]);
+        //    }
+        //    if(tagslistarr[i].indexOf("@") === 0){
+        //      String pattern = tagslistarr[i],
+        //      re = new RegExp(pattern, "g");
+        //      tweetContent = tweetContent.replace(re, "");
+        //
+        //      mentions.push(tagslistarr[i]);  
+        //    }
+        //} 
+    }
+    
+    public List<User> getFollowersFromUser(String name) {
+        User foundUser = findByName(name);
+        List<User> foundFollowers = new ArrayList();
+        foundFollowers.addAll(foundUser.getFollowing());
+        return foundFollowers;
+    }
+
+    public List<Tweet> getTweetsWithMention(String mention){
+        List<Tweet> found = new ArrayList();
+        List<Tweet> allTweets = this.getAllTweets();
+        
+        for(Tweet t : allTweets){
+            List<String> mentions = t.getMentions();
+            for(String s : mentions){
+                if(s.equals(mention)){
+                    found.add(t);
+                }
+            }
+        }
+        return found;
+    }
+
+    List<String> getTrending() {
+        //TODO
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

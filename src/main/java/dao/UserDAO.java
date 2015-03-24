@@ -22,7 +22,13 @@ public interface UserDAO {
     
     List<Tweet> getAllTweets();
     
-//    List<Tweet> getTweetsFromUserWithId(Long id);
-    
     List<Tweet> getTweetsFromUserWithName(String name);
+    
+    boolean createTweetOfUser(String tweet, String owner);
+    
+    List<User> getFollowersFromUserWithName(String name);
+    
+    List<Tweet> getTweetsWithMentions(String mention);
+
+    List<String> getTrending();
 }
