@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Trend;
 import domain.User;
 import domain.Tweet;
 import java.util.List;
@@ -30,5 +31,5 @@ public interface UserDAO {
     
     List<Tweet> getTweetsWithMentions(String mention);
 
-    List<String> getTrending();
+    List<Trend> getTrending();
 }

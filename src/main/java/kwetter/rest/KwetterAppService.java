@@ -5,6 +5,7 @@
  */
 package kwetter.rest;
 
+import domain.Trend;
 import domain.Tweet;
 import domain.User;
 import java.util.List;
@@ -73,7 +74,7 @@ public class KwetterAppService {
     
     @POST
     @Path("/tweets/{id}")
-    @Consumes({"application/json"})
+    @Consumes("application/json")
     public void createTweet(String tweet, @PathParam("id") String username) {
         String tweetContent = tweet;
         String tweetOwner = username;
@@ -85,56 +86,18 @@ public class KwetterAppService {
     @GET
     @Path("/stats/trending")
     @Produces("application/json")
-    public List<String> getTrending(){
-        return kwetter.getTrending();
+    public List<Trend> getTrending(){
+        // WHY YOU NOT WORKING?!?!
+        // Trend object has @xml element..
+        // also not working with a list of strings...
+        //return kwetter.getTrending();
+        return null;
     }
             
     @GET
     @Path("/stats/users-count")
     @Produces("application/json")
     public String allUsers(){
-//        return kwetter.findAll().size();
-        return "" + kwetter.getAllUsers().size(); // return Long doesnt work..?
+        return "" + kwetter.getAllUsers().size(); // return Long doesnt work..needs xmlrootelement on all resources.
     }
-    
-
-    
-//    @GET
-//    @Path("/tweets")
-//    @Produces("application/json")
-//    public List<Tweet> listUserTweetss(@PathParam("name") String name){
-////        return kwetter.find(name);
-////        return null;
-//        List<Tweet> found = kwetter.getAllTweets();
-//        return found;
-//    }
-    
-//    @GET
-//    @Path("/tweets/{name}")
-//    @Produces("application/json")
-//    public List<Tweet> listUserTweets(@PathParam("name") String name){
-////        return kwetter.find(name);
-////        return null;
-//        return kwetter.getTweetsFromUser(name);
-//    }
-
-//    @GET
-//    @Path("/stats/users/active")
-//    @Produces("application/json")
-//    public long activeUsers(){
-//        return 1L;
-//    }
-    
-//    @PUT
-//    @Path("{id}")
-//    @Consumes({"application/xml", "application/json"})
-//    public void editUser(@PathParam("id") Long id, User user){
-//        kwetter.edit(user);
-//    }
-    
-//    @DELETE
-//    @Path("users/delete/{id}")
-//    public void deleteUser(@PathParam("id") User user){
-//        kwetter.remove(user);
-//    }
 }

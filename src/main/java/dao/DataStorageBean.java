@@ -5,6 +5,7 @@
  */
 package dao;
 
+import domain.Trend;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,11 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import domain.Tweet;
 import domain.User;
-import jdk.nashorn.internal.runtime.regexp.RegExp;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Singleton
 @Startup // causes the bean to be instantiated by the container when the application starts.
@@ -32,15 +37,17 @@ public class DataStorageBean {
         u1.addFollowing(u4);
 
         List tags = new ArrayList();
+        List tags2 = new ArrayList();
         List mentions = new ArrayList();
         List mentions2 = new ArrayList();
-        tags.add("Hello");tags.add("World");
+        tags.add("Netbeans");
+        tags2.add("Hello");tags2.add("World");
         mentions.add("Frank");mentions.add("Tom");
         mentions2.add("Hans");mentions2.add("Tom");
         
         Tweet t1 = new Tweet("Hallo", new Date(), "PC", "Hans", tags, mentions);
         Tweet t2 = new Tweet("Hallo again", new Date(), "PC", "Hans", tags, mentions);
-        Tweet t3 = new Tweet("Hallo where are you", new Date(), "PC", "Hans", tags, mentions);
+        Tweet t3 = new Tweet("Hallo where are you", new Date(), "PC", "Hans", tags2, mentions);
         Tweet t4 = new Tweet("Currently at the Rex", new Date(), "PC", "Frank", tags, mentions2);
         Tweet t5 = new Tweet("Im at the pathé watching a movie", new Date(), "PC", "Frank", tags, mentions2);
         
@@ -122,50 +129,26 @@ public class DataStorageBean {
     
     private Tweet createTweet(String tweet, String owner){
         String tweetContent = tweet;
-        
+        // tags and mentions lists
         List<String> tags = new ArrayList();
         List<String> mentions = new ArrayList();
+        // regular expressions
+        Pattern HASHTAG_PATTERN = Pattern.compile("#(\\w+)");
+        Matcher hashtagMatcher = HASHTAG_PATTERN.matcher(tweetContent);
+        Pattern MENTION_PATTERN = Pattern.compile("@(\\w+)");
+        Matcher mentionMatcher = MENTION_PATTERN.matcher(tweetContent);
         
-        String[] tagslistarr = tweetContent.split(" ");
-        System.out.println(tagslistarr.length);
-        System.out.println(tagslistarr);
-        for (String t : tagslistarr) {
-            System.out.println(t);
+        while (hashtagMatcher.find()) {
+            System.out.println(hashtagMatcher.group(1));
+            tags.add(hashtagMatcher.group(1));
         }
-//        for (String tagslistarr1 : tagslistarr) {
-//            if (tagslistarr1.indexOf("#") == 0) {
-//                String pattern = tagslistarr1;
-//                String re = new RegExp(pattern, "g");
-//                tweetContent = tweetContent.replace(re, "");
-//                tags.add(tagslistarr1);
-//            }
-//            if (tagslistarr1.indexOf("@") == 0) {
-//                String pattern = tagslistarr1;
-//                String re = new RegExp(pattern, "g");
-//                tweetContent = tweetContent.replace(re, "");
-//                mentions.add(tagslistarr1);  
-//            }
-//        } 
+        while (mentionMatcher.find()){
+            System.out.println(mentionMatcher.group(1));
+            mentions.add(mentionMatcher.group(1));
+        }
+        // new tweet (tweetcontent, date, postedFrom, owner, tagslist, mentionslist);
         Tweet t = new Tweet(tweet, new Date(), "unknown", owner, tags, mentions);
         return t;
-
-                //(old)JavaScript code:
-        //for (int i = 0; i < tagslistarr.length; i++) {
-        //    if(tagslistarr[i].indexOf("#") === 0){
-        //      String pattern = tagslistarr[i],
-        //      re = new RegExp(pattern, "g");
-        //      tweetContent = tweetContent.replace(re, "");
-        //
-        //      tags.push(tagslistarr[i]);
-        //    }
-        //    if(tagslistarr[i].indexOf("@") === 0){
-        //      String pattern = tagslistarr[i],
-        //      re = new RegExp(pattern, "g");
-        //      tweetContent = tweetContent.replace(re, "");
-        //
-        //      mentions.push(tagslistarr[i]);  
-        //    }
-        //} 
     }
     
     public List<User> getFollowersFromUser(String name) {
@@ -190,8 +173,46 @@ public class DataStorageBean {
         return found;
     }
 
-    List<String> getTrending() {
-        //TODO
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Trend> getTrending() {
+        List<String> allTags = getAllTags();
+        Map<String, Integer> map = new HashMap<String, Integer>();
+
+        for (String s : allTags) {
+            if (map.containsKey(s)) {
+                map.put(s, map.get(s) + 1);
+            } else {
+                map.put(s, 1);
+            }
+        }
+
+        ValueComparator<String, Integer> comparator = new ValueComparator<String,Integer>(map);
+        Map<String, Integer> sortedMap = new TreeMap<String,Integer>(comparator);
+        sortedMap.putAll(map);
+        
+        // List with trend objects
+        List<Trend> trends = new ArrayList<Trend>();
+        
+        for(Map.Entry<String,Integer> entry : sortedMap.entrySet()) {
+            Trend t = new Trend(entry.getKey(),entry.getValue());
+            System.out.println(t.getName()+" - "+ t.getCount());
+            trends.add(t);
+        }
+        
+        List<String> sortedList = new ArrayList<String>(sortedMap.keySet());
+        
+//        System.out.println(map);
+//        System.out.println(sortedMap);
+//        System.out.println(sortedList); //hmmm, value with same count gives problems
+        
+        return trends;
+    }
+    
+    private List getAllTags(){
+        List<Tweet> allTweets = getAllTweets();
+        List<String> allTags = new ArrayList();
+        for(Tweet t : allTweets){
+            allTags.addAll(t.getTags());
+        }
+        return allTags;
     }
 }

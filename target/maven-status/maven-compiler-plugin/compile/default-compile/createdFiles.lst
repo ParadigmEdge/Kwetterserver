@@ -4,6 +4,8 @@ kwetter\rest\ApplicationConfig.class
 dao\UserDAO.class
 domain\Tweet.class
 domain\User.class
+domain\Trend.class
 kwetter\rest\RestResponseFilter.class
 service\KwetterService.class
 dao\UserDAOCollectionImpl.class
+dao\ValueComparator.class

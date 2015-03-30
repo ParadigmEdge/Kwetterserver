@@ -1,5 +1,6 @@
 package dao;
 
+import domain.Trend;
 import domain.Tweet;
 import java.util.List;
 import domain.User;
@@ -69,7 +70,7 @@ public class UserDAOCollectionImpl implements UserDAO {
     }
 
     @Override
-    public List<String> getTrending() {
+    public List<Trend> getTrending() {
         return dataStorageBean.getTrending();
     }
 

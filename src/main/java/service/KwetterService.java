@@ -2,6 +2,7 @@ package service;
 
 import java.util.List;
 import dao.UserDAO;
+import domain.Trend;
 import domain.Tweet;
 import domain.User;
 import javax.ejb.Stateless;
@@ -55,7 +56,7 @@ public class KwetterService {
         return userDAO.getTweetsWithMentions(mention);
     }
 
-    public List<String> getTrending() {
+    public List<Trend> getTrending() {
         return userDAO.getTrending();
     }
     
