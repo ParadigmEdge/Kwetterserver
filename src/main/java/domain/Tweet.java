@@ -3,11 +3,18 @@ package domain;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Tweet {
-    private static final long serialVersionUID = 1L;
+@Entity
+public class Tweet implements java.io.Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String tweet;
     private Date postDate;
     private String postedFrom;
@@ -112,6 +119,14 @@ public class Tweet {
     @Override
     public String toString() {
         return "twitter.domain.Tweet[id=" + postDate.toString() + "]";
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

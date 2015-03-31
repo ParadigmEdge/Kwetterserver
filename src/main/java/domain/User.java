@@ -3,12 +3,23 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class User  {
-    private static final long serialVersionUID = 1L;
-
+@Entity(name = "USERS")
+@NamedQueries({
+    @NamedQuery(name="User.findAll", query="SELECT u FROM USERS u")
+})
+public class User implements java.io.Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
     private String name;
     private String web;
     private String bio;

@@ -90,7 +90,7 @@ public class KwetterAppService {
         // WHY YOU NOT WORKING?!?!
         // Trend object has @xml element..
         // also not working with a list of strings...
-        //return kwetter.getTrending();
+//        return kwetter.getTrending();
         return null;
     }
             
