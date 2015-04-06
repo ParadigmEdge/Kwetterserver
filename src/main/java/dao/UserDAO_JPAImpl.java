@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dao;
 
 import domain.Trend;
@@ -13,41 +8,47 @@ import javax.ejb.Stateless;
 import javax.enterprise.inject.Alternative;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
  * @author RY Jin
  */
-@Alternative
 @Stateless
+@JPA
+//@Alternative
 public class UserDAO_JPAImpl implements UserDAO{
-    @PersistenceContext
+
+    private final String PERSISTENCE_UNIT = "MySQLKwetterServicePU";
+    
+    @PersistenceContext(unitName = PERSISTENCE_UNIT)
     private EntityManager em;
     
     @Override
     public int usersCount() {
-        em.createNamedQuery("User.findAll");
-        return 0;
+        return this.usersCount();
     }
     
     @Override
     public void createUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.persist(user);
+        System.out.println("JPA ENTITY MANAGER PERSIST: " + user);
     }
 
     @Override
     public void editUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.merge(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Query q = em.createNamedQuery("User.findAll");
+        return q.getResultList();
     }
 
     @Override
     public User findUserById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return em.find(User.class, id);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class UserDAO_JPAImpl implements UserDAO{
 
     @Override
     public void removeUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        em.remove(user);
     }
 
     @Override
@@ -89,5 +90,7 @@ public class UserDAO_JPAImpl implements UserDAO{
     public List<Trend> getTrending() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    
     
 }

@@ -3,30 +3,48 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Entity(name = "USERS")
-@NamedQueries({
-    @NamedQuery(name="User.findAll", query="SELECT u FROM USERS u")
-})
+@NamedQueries({@NamedQuery(name="User.findAll", query="SELECT u FROM USERS u")})
 public class User implements java.io.Serializable{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    
     private String name;
     private String web;
     private String bio;
     private String avatar;
 
+    @JoinTable(
+        joinColumns = {
+            @JoinColumn(name = "followersUserName", referencedColumnName = "name")
+        },
+        inverseJoinColumns = {
+            @JoinColumn(name = "followingUserName", referencedColumnName = "name")
+        }
+    )
+        
+    
+    @ManyToMany(mappedBy ="followers",fetch = FetchType.EAGER)
     private Collection<User> following = new ArrayList();
+    @ManyToMany(fetch = FetchType.EAGER)
     private Collection<User> followers = new ArrayList();
+    @OneToMany(cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
     private Collection<Tweet> tweets = new ArrayList();
 
     public User() {
@@ -108,6 +126,10 @@ public class User implements java.io.Serializable{
     public Boolean addFollowing(User following){
         return this.following.add(following);
     }
+    //TODO add following change to list of id's to prevent infinite recursion of users
+//    public Boolean addFollowing(String userId){
+//        return this.following.add(userId);
+//    }
 
     public Boolean addTweet(Tweet tweet){
         tweet.setOwner(this.getName());

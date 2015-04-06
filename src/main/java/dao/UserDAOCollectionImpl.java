@@ -7,9 +7,15 @@ import domain.User;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 
+/**
+ *
+ * @author RY Jin
+ */
 @Stateless
+@Collection
 public class UserDAOCollectionImpl implements UserDAO {
-    @Inject DataStorageBean dataStorageBean;
+    @Inject 
+    private DataStorageBean dataStorageBean;
     
     public UserDAOCollectionImpl() {
     }

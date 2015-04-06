@@ -26,6 +26,7 @@ import service.KwetterService;
 @Path("/kwetter")
 @Stateful
 public class KwetterAppService {
+    
     @Inject
     KwetterService kwetter;
     
@@ -47,7 +48,9 @@ public class KwetterAppService {
     @Path("/users/{name}/tweets")
     @Produces("application/json")
     public List<Tweet> getTweets(@PathParam("name") String name){
-        return kwetter.getTweetsFromUser(name);
+        User u = kwetter.findUserByName(name);
+        List<Tweet> tweets = (List<Tweet>) u.getTweets();
+        return tweets;
     }
     
     
