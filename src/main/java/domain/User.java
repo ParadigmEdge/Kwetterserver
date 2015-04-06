@@ -107,7 +107,7 @@ public class User implements java.io.Serializable{
         this.following = following;
     }
     
-    public Collection<User> getFollower() {
+    public Collection<User> getFollowers() {
         return Collections.unmodifiableCollection(followers);
     }
 
@@ -157,5 +157,4 @@ public class User implements java.io.Serializable{
     public String toString() {
         return "twitter.domain.User[naam=" + name + "]";
     }
-
 }

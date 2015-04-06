@@ -45,7 +45,6 @@ public class UserDAOCollectionImpl implements UserDAO {
         return dataStorageBean.findAll();
     }
 
-    @Override
     public User findUserByName(String name) {
         return dataStorageBean.findByName(name);
     }
@@ -55,32 +54,26 @@ public class UserDAOCollectionImpl implements UserDAO {
         return dataStorageBean.findById(id);
     }
     
-    @Override
     public List<Tweet> getAllTweets() {
         return dataStorageBean.getAllTweets();
     }
     
-    @Override
     public List<Tweet> getTweetsFromUserWithName(String name) {
         return dataStorageBean.getTweetsFromUser(name);
     }
     
-    @Override
     public List<User> getFollowersFromUserWithName(String name) {
         return dataStorageBean.getFollowersFromUser(name);
     }
     
-    @Override
     public List<Tweet> getTweetsWithMentions(String mention){
         return dataStorageBean.getTweetsWithMention(mention);
     }
 
-    @Override
     public List<Trend> getTrending() {
         return dataStorageBean.getTrending();
     }
 
-    @Override
     public boolean createTweetOfUser(String tweet, String owner) {
         return dataStorageBean.addTweetToUser(tweet, owner);
     }

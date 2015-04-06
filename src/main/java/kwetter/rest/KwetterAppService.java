@@ -79,22 +79,21 @@ public class KwetterAppService {
     @Path("/tweets/{id}")
     @Consumes("application/json")
     public void createTweet(String tweet, @PathParam("id") String username) {
-        String tweetContent = tweet;
-        String tweetOwner = username;
-        System.out.println(tweetContent); 
-        System.out.println(tweetOwner);
-        boolean passed = kwetter.createTweet(tweetContent,tweetOwner);
+//        String tweetContent = tweet;
+//        String tweetOwner = username;
+        System.out.println(tweet);
+        System.out.println(username);
+        boolean passed = kwetter.createTweet(tweet,username);
     }
     
     @GET
     @Path("/stats/trending")
     @Produces("application/json")
     public List<Trend> getTrending(){
-        // WHY YOU NOT WORKING?!?!
         // Trend object has @xml element..
         // also not working with a list of strings...
-//        return kwetter.getTrending();
-        return null;
+        // return kwetter.getTrending();
+        return null; 
     }
             
     @GET

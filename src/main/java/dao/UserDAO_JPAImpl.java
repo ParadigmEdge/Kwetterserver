@@ -1,11 +1,9 @@
 package dao;
 
-import domain.Trend;
-import domain.Tweet;
 import domain.User;
 import java.util.List;
 import javax.ejb.Stateless;
-import javax.enterprise.inject.Alternative;
+//import javax.enterprise.inject.Alternative;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -26,7 +24,7 @@ public class UserDAO_JPAImpl implements UserDAO{
     
     @Override
     public int usersCount() {
-        return this.usersCount();
+        return this.getAllUsers().size();
     }
     
     @Override
@@ -52,45 +50,7 @@ public class UserDAO_JPAImpl implements UserDAO{
     }
 
     @Override
-    public User findUserByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void removeUser(User user) {
         em.remove(user);
     }
-
-    @Override
-    public List<Tweet> getAllTweets() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Tweet> getTweetsFromUserWithName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean createTweetOfUser(String tweet, String owner) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<User> getFollowersFromUserWithName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Tweet> getTweetsWithMentions(String mention) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Trend> getTrending() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
-    
 }
