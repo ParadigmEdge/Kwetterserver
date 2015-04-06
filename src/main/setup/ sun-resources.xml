@@ -6,7 +6,7 @@
         <property name="portNumber" value="9139"/>
         <property name="databaseName" value="jin1_school"/>
         <property name="User" value="Jin1yongyi"/>
-        <property name="Password" value="1warriorelf1"/>
+        <property name="Password" value=""/>
         <property name="URL" value="jdbc:mysql://84.246.4.143:9139/jin1_school?zeroDateTimeBehavior=convertToNull"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
