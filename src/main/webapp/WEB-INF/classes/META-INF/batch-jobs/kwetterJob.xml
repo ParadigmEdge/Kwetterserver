@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<job id="kwetterJob" xmlns="http://xmlns.jcp.org/xml/ns/javaee" version="1.0">
+    <step id="process" >
+        <chunk item-count="10">
+            <reader ref="kwetterItemReader"/>
+            <processor ref="kwetterItemProcessor"/>
+            <writer ref="kwetterItemWriter"/>
+        </chunk>    
+    </step>
+</job>

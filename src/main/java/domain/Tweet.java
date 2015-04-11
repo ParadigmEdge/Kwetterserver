@@ -32,6 +32,12 @@ public class Tweet implements java.io.Serializable{
         this.tweet = tweet;
     }
     
+    public Tweet(String tweet, Date date, String from) {
+        this.tweet = tweet;
+        this.postDate = date;
+        this.postedFrom = from;
+    }
+    
     public Tweet(String tweet, Date date, String from, String owner, List tags, List mentions) {
         this.tweet = tweet;
         this.postDate = date;

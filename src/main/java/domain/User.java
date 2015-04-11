@@ -66,71 +66,61 @@ public class User implements java.io.Serializable{
         this.bio = bio;
         this.avatar = avatar;
     }
-
+    //BIO
     public String getBio() {
         return bio;
     }
-
     public void setBio(String bio) {
         this.bio = bio;
     }
-
+    //NAME
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
+    //WEB
     public String getWeb() {
         return web;
     }
-
     public void setWeb(String web) {
         this.web = web;
     }
-    
+    //AVATAR
     public String getAvatar() {
         return avatar;
     }
-
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-
+    //FOLLOWINGS
     public Collection<User> getFollowing() {
         return Collections.unmodifiableCollection(following);
     }
-
     public void setFollowing(Collection<User> following) {
         this.following = following;
     }
-    
-    public Collection<User> getFollowers() {
-        return Collections.unmodifiableCollection(followers);
-    }
-
-    public void setFollower(Collection<User> followers) {
-        this.followers = followers;
-    }
-
-    public Collection<Tweet> getTweets() {
-        return Collections.unmodifiableCollection(tweets);
-    }
-
-    public void setTweets(Collection<Tweet> tweets) {
-        this.tweets = tweets;
-    }
-    
     public Boolean addFollowing(User following){
         return this.following.add(following);
     }
-    //TODO add following change to list of id's to prevent infinite recursion of users
-//    public Boolean addFollowing(String userId){
-//        return this.following.add(userId);
-//    }
-
+    //FOLLOWERS
+    public Collection<User> getFollowers() {
+        return Collections.unmodifiableCollection(followers);
+    }
+    public void setFollower(Collection<User> followers) {
+        this.followers = followers;
+    }
+    public Boolean addFollower(User follower){
+        return this.followers.add(follower);
+    }
+    //TWEETS
+    public Collection<Tweet> getTweets() {
+        return Collections.unmodifiableCollection(tweets);
+    }
+    public void setTweets(Collection<Tweet> tweets) {
+        this.tweets = tweets;
+    }
     public Boolean addTweet(Tweet tweet){
         tweet.setOwner(this.getName());
         return this.tweets.add(tweet);

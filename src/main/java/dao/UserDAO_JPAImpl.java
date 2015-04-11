@@ -15,18 +15,18 @@ import javax.persistence.Query;
 @Stateless
 @JPA
 //@Alternative
-public class UserDAO_JPAImpl implements UserDAO{
+public class UserDAO_JPAImpl implements UserDAO {
 
     private final String PERSISTENCE_UNIT = "MySQLKwetterServicePU";
-    
+
     @PersistenceContext(unitName = PERSISTENCE_UNIT)
     private EntityManager em;
-    
+
     @Override
     public int usersCount() {
         return this.getAllUsers().size();
     }
-    
+
     @Override
     public void createUser(User user) {
         em.persist(user);
@@ -47,6 +47,14 @@ public class UserDAO_JPAImpl implements UserDAO{
     @Override
     public User findUserById(Long id) {
         return em.find(User.class, id);
+    }
+
+    public User findUserByName(String name) {
+        Query newQuery = this.em.createQuery("Select user from User user where user.name = :name");
+        newQuery.setParameter("name", name);
+
+        List<User> usersFound = newQuery.getResultList();
+        return usersFound.isEmpty() ? null : usersFound.get(0);
     }
 
     @Override
