@@ -3,6 +3,7 @@ package kwetter.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,33 +20,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Entity(name = "USERS")
-@NamedQueries({@NamedQuery(name="User.findAll", query="SELECT u FROM USERS u")})
-public class User implements java.io.Serializable{
+@NamedQueries({
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM USERS u")})
+public class User implements java.io.Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
+
     private String name;
     private String web;
     private String bio;
     private String avatar;
 
     @JoinTable(
-        joinColumns = {
-            @JoinColumn(name = "followersUserName", referencedColumnName = "name")
-        },
-        inverseJoinColumns = {
-            @JoinColumn(name = "followingUserName", referencedColumnName = "name")
-        }
+            joinColumns = {
+                @JoinColumn(name = "followersUserName", referencedColumnName = "name")
+            },
+            inverseJoinColumns = {
+                @JoinColumn(name = "followingUserName", referencedColumnName = "name")
+            }
     )
-        
-    
-    @ManyToMany(mappedBy ="followers",fetch = FetchType.EAGER)
+
+    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
     private Collection<User> following = new ArrayList();
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<User> followers = new ArrayList();
-    @OneToMany(cascade={CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Collection<Tweet> tweets = new ArrayList();
+
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
@@ -59,71 +64,97 @@ public class User implements java.io.Serializable{
         this.web = web;
         this.bio = bio;
     }
-    
-    public User(String naam, String web, String bio, String avatar){
+
+    public User(String naam, String web, String bio, String avatar) {
         this.name = naam;
         this.web = web;
         this.bio = bio;
         this.avatar = avatar;
     }
+
     //BIO
     public String getBio() {
         return bio;
     }
+
     public void setBio(String bio) {
         this.bio = bio;
     }
+
     //NAME
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     //WEB
     public String getWeb() {
         return web;
     }
+
     public void setWeb(String web) {
         this.web = web;
     }
+
     //AVATAR
     public String getAvatar() {
         return avatar;
     }
+
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
     //FOLLOWINGS
     public Collection<User> getFollowing() {
         return Collections.unmodifiableCollection(following);
     }
+
     public void setFollowing(Collection<User> following) {
         this.following = following;
     }
-    public Boolean addFollowing(User following){
+
+    public Boolean addFollowing(User following) {
         return this.following.add(following);
     }
+
     //FOLLOWERS
     public Collection<User> getFollowers() {
         return Collections.unmodifiableCollection(followers);
     }
+
     public void setFollower(Collection<User> followers) {
         this.followers = followers;
     }
-    public Boolean addFollower(User follower){
+
+    public Boolean addFollower(User follower) {
         return this.followers.add(follower);
     }
+
     //TWEETS
     public Collection<Tweet> getTweets() {
         return Collections.unmodifiableCollection(tweets);
     }
+
     public void setTweets(Collection<Tweet> tweets) {
         this.tweets = tweets;
     }
-    public Boolean addTweet(Tweet tweet){
+
+    public Boolean addTweet(Tweet tweet) {
         tweet.setOwner(this.getName());
         return this.tweets.add(tweet);
+    }
+
+    // ROLES
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -140,7 +171,7 @@ public class User implements java.io.Serializable{
             return false;
         }
         User other = (User) object;
-        return this.hashCode()==other.hashCode();
+        return this.hashCode() == other.hashCode();
     }
 
     @Override

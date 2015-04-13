@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import kwetter.domain.Role;
 
 @Stateless
 public class KwetterService {
@@ -174,6 +175,50 @@ public class KwetterService {
         // new tweet (tweetcontent, date, postedFrom, owner, tagslist, mentionslist);
         Tweet t = new Tweet(tweet, new Date(), "unknown", owner, tags, mentions);
         return t;
+    }
+
+    public void initUsers() {
+        Role role = new Role("normal");
+        Role adminRole = new Role("admin");
+        
+        User u1 = new User("Hans", "http", "geboren 1", "assets/img/avatar_01.jpg");
+        User u2 = new User("Frank", "httpF", "geboren 2", "assets/img/avatar_02.jpg");
+        User u3 = new User("Tom", "httpT", "geboren 3", "assets/img/avatar_03.jpg");
+        User u4 = new User("Sjaak", "httpS", "geboren 4", "assets/img/avatar_01.jpg");
+        u1.addFollowing(u2);
+        u1.addFollower(u3);
+        
+        u1.getRoles().add(role);
+        u1.getRoles().add(adminRole);
+        u2.getRoles().add(role);
+        u3.getRoles().add(role);
+        u4.getRoles().add(role);
+
+        List tags = new ArrayList();
+        List tags2 = new ArrayList();
+        List mentions = new ArrayList();
+        List mentions2 = new ArrayList();
+        tags.add("Netbeans");
+        tags2.add("Hello");tags2.add("World");
+        mentions.add("Frank");mentions.add("Tom");
+        mentions2.add("Hans");mentions2.add("Tom");
+
+        Tweet t1 = new Tweet("Hallo", new Date(), "PC", "Hans", tags, mentions);
+        Tweet t2 = new Tweet("Hallo again", new Date(), "PC", "Hans", tags, mentions);
+        Tweet t3 = new Tweet("Hallo where are you", new Date(), "PC", "Hans", tags2, mentions);
+        Tweet t4 = new Tweet("Currently at the Rex", new Date(), "PC", "Frank", tags, mentions2);
+        Tweet t5 = new Tweet("Im at the pathé watching a movie", new Date(), "PC", "Frank", tags, mentions2);
+
+        u1.addTweet(t1);
+        u1.addTweet(t2);
+        u1.addTweet(t3);
+        u2.addTweet(t4);
+        u2.addTweet(t5);
+
+        this.createUser(u1);
+        this.createUser(u2);
+        this.createUser(u3);
+        this.createUser(u4);
     }
     
     
