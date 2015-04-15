@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import kwetter.domain.Role;
+//import kwetter.domain.Role;
 
 @Stateless
 public class KwetterService {
@@ -153,7 +153,7 @@ public class KwetterService {
         return succes;
     }
     
-    public Tweet buildTweet(String tweet, String owner) {
+    private Tweet buildTweet(String tweet, String owner) {
         String tweetContent = tweet;
         // tags and mentions lists
         List<String> tags = new ArrayList();
@@ -178,21 +178,21 @@ public class KwetterService {
     }
 
     public void initUsers() {
-        Role role = new Role("normal");
-        Role adminRole = new Role("admin");
-        
+//        Role role = new Role("normal");
+//        Role adminRole = new Role("admin");
+//        
         User u1 = new User("Hans", "http", "geboren 1", "assets/img/avatar_01.jpg");
         User u2 = new User("Frank", "httpF", "geboren 2", "assets/img/avatar_02.jpg");
         User u3 = new User("Tom", "httpT", "geboren 3", "assets/img/avatar_03.jpg");
         User u4 = new User("Sjaak", "httpS", "geboren 4", "assets/img/avatar_01.jpg");
         u1.addFollowing(u2);
         u1.addFollower(u3);
-        
-        u1.getRoles().add(role);
-        u1.getRoles().add(adminRole);
-        u2.getRoles().add(role);
-        u3.getRoles().add(role);
-        u4.getRoles().add(role);
+//        
+//        u1.getRoles().add(role);
+//        u1.getRoles().add(adminRole);
+//        u2.getRoles().add(role);
+//        u3.getRoles().add(role);
+//        u4.getRoles().add(role);
 
         List tags = new ArrayList();
         List tags2 = new ArrayList();

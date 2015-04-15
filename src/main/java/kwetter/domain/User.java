@@ -49,8 +49,8 @@ public class User implements java.io.Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Collection<Tweet> tweets = new ArrayList();
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    private List<Role> roles = new ArrayList<>();
+//    @ManyToMany(cascade = CascadeType.PERSIST)
+//    private List<Role> roles = new ArrayList<>();
 
     public User() {
     }
@@ -148,14 +148,14 @@ public class User implements java.io.Serializable {
         return this.tweets.add(tweet);
     }
 
-    // ROLES
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
-    }
+//    // ROLES
+//    public List<Role> getRoles() {
+//        return roles;
+//    }
+//
+//    public void setRoles(List<Role> roles) {
+//        this.roles = roles;
+//    }
 
     @Override
     public int hashCode() {
